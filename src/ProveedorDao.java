@@ -4,51 +4,59 @@ import java.util.List;
 
 public class ProveedorDao {
 
-    /* ---------- INSERT ---------- */
+    /* CREATE */
     public void save(Proveedor p) throws SQLException {
-        String sql = "INSERT INTO Proveedores (nombre, contacto) VALUES (?, ?)";
-
+        String sql = "INSERT INTO Proveedores(nombre, contacto) VALUES(?,?)";
         try (Connection c = DatabaseConnection.getConnection();
              PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
             ps.setString(1, p.nombre());
             ps.setString(2, p.contacto());
             ps.executeUpdate();
         }
     }
 
-    /* ---------- SELECT por id ---------- */
+    /* READ */
     public Proveedor find(int id) throws SQLException {
-        String sql = "SELECT * FROM Proveedores WHERE id = ?";
-
+        String sql = "SELECT * FROM Proveedores WHERE id=?";
         try (Connection c = DatabaseConnection.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
-
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            return rs.next() ? mapRow(rs) : null;
+            return rs.next() ? map(rs) : null;
         }
     }
-
-    /* ---------- SELECT * ---------- */
     public List<Proveedor> findAll() throws SQLException {
-        List<Proveedor> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Proveedores";
-
+        List<Proveedor> out = new ArrayList<>();
         try (Connection c = DatabaseConnection.getConnection();
-             Statement st = c.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
-
-            while (rs.next()) lista.add(mapRow(rs));
+             ResultSet rs = c.createStatement().executeQuery("SELECT * FROM Proveedores")) {
+            while (rs.next()) out.add(map(rs));
         }
-        return lista;
+        return out;
     }
 
-    /* ---------- Mapeo ---------- */
-    private Proveedor mapRow(ResultSet rs) throws SQLException {
-        return new Proveedor(
-                rs.getInt("id"),
-                rs.getString("nombre"),
-                rs.getString("contacto"));
+    /* UPDATE */
+    public void update(Proveedor p) throws SQLException {
+        String sql = "UPDATE Proveedores SET nombre=?, contacto=? WHERE id=?";
+        try (Connection c = DatabaseConnection.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, p.nombre());
+            ps.setString(2, p.contacto());
+            ps.setInt(3, p.id());
+            ps.executeUpdate();
+        }
+    }
+
+    /* DELETE */
+    public void delete(int id) throws SQLException {
+        try (Connection c = DatabaseConnection.getConnection();
+             PreparedStatement ps = c.prepareStatement("DELETE FROM Proveedores WHERE id=?")) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
+
+    private Proveedor map(ResultSet rs) throws SQLException {
+        return new Proveedor(rs.getInt("id"), rs.getString("nombre"), rs.getString("contacto"));
     }
 }
+

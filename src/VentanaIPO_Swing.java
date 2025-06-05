@@ -3,10 +3,11 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.time.LocalDate;
 
-public class VentanaIPO_Swing extends JFrame {
+public class VentanaIPO_Swing extends javax.swing.JFrame {
 
     private final GestorIPO gestor = new GestorIPO();
 
+    /* Modelos */
     private final DefaultTableModel mProv = new DefaultTableModel(
             new Object[]{"ID", "Nombre", "Contacto"}, 0);
     private final DefaultTableModel mInv  = new DefaultTableModel(
@@ -16,9 +17,7 @@ public class VentanaIPO_Swing extends JFrame {
     private final DefaultTableModel mHit  = new DefaultTableModel(
             new Object[]{"ID", "Nombre", "Fecha", "Estado", "DocId"}, 0);
 
-    public VentanaIPO_Swing() {
-        SwingUtilities.invokeLater(this::initUI);
-    }
+    public VentanaIPO_Swing() { SwingUtilities.invokeLater(this::initUI); }
 
     private void initUI() {
         JFrame f = new JFrame("Gestión IPO – Glamour Beauty");
@@ -34,30 +33,37 @@ public class VentanaIPO_Swing extends JFrame {
         f.add(tabs);
         f.setVisible(true);
 
-        /* Carga inicial de datos */
         recargaProv(); recargaInv(); recargaDoc();
     }
 
+    /* ---------------- PANEL PROVEEDORES ---------------- */
     private JPanel panelProveedores() {
-        JTextField tNombre = new JTextField(12);
-        JTextField tContacto = new JTextField(12);
+        JTextField tNom = new JTextField(12);
+        JTextField tCon = new JTextField(12);
         JButton btnAdd = new JButton("Crear");
+        JButton btnDel = new JButton("Eliminar seleccionado");
 
         JTable tabla = new JTable(mProv);
-        tabla.setFillsViewportHeight(true);
 
         btnAdd.addActionListener(e -> {
             try {
-                gestor.altaProveedor(tNombre.getText(), tContacto.getText());
-                tNombre.setText(""); tContacto.setText("");
-                recargaProv();
+                gestor.altaProveedor(tNom.getText(), tCon.getText());
+                tNom.setText(""); tCon.setText(""); recargaProv();
             } catch (Exception ex) { ex.printStackTrace(); }
         });
 
+        btnDel.addActionListener(e -> {
+            int row = tabla.getSelectedRow();
+            if (row == -1) return;
+            int id = (int) tabla.getValueAt(row, 0);
+            try { gestor.borrarProveedor(id); recargaProv(); }
+            catch (Exception ex) { ex.printStackTrace(); }
+        });
+
         JPanel form = new JPanel();
-        form.add(new JLabel("Nombre")); form.add(tNombre);
-        form.add(new JLabel("Contacto")); form.add(tContacto);
-        form.add(btnAdd);
+        form.add(new JLabel("Nombre")); form.add(tNom);
+        form.add(new JLabel("Contacto")); form.add(tCon);
+        form.add(btnAdd); form.add(btnDel);
 
         JPanel p = new JPanel(new BorderLayout());
         p.add(form, BorderLayout.NORTH);
@@ -65,26 +71,35 @@ public class VentanaIPO_Swing extends JFrame {
         return p;
     }
 
+    /* ---------------- PANEL INVERSIONISTAS ---------------- */
     private JPanel panelInversionistas() {
-        JTextField tNombre = new JTextField(10);
-        JTextField tCapital = new JTextField(6);
+        JTextField tNom = new JTextField(10);
+        JTextField tCap = new JTextField(6);
         JButton btnAdd = new JButton("Crear");
+        JButton btnDel = new JButton("Eliminar seleccionado");
 
         JTable tabla = new JTable(mInv);
 
         btnAdd.addActionListener(e -> {
             try {
-                double cap = Double.parseDouble(tCapital.getText());
-                gestor.altaInversionista(tNombre.getText(), cap);
-                tNombre.setText(""); tCapital.setText("");
-                recargaInv();
+                double cap = Double.parseDouble(tCap.getText());
+                gestor.altaInversionista(tNom.getText(), cap);
+                tNom.setText(""); tCap.setText(""); recargaInv();
             } catch (Exception ex) { ex.printStackTrace(); }
         });
 
+        btnDel.addActionListener(e -> {
+            int row = tabla.getSelectedRow();
+            if (row == -1) return;
+            int id = (int) tabla.getValueAt(row, 0);
+            try { gestor.borrarInversionista(id); recargaInv(); }
+            catch (Exception ex) { ex.printStackTrace(); }
+        });
+
         JPanel form = new JPanel();
-        form.add(new JLabel("Nombre")); form.add(tNombre);
-        form.add(new JLabel("Capital")); form.add(tCapital);
-        form.add(btnAdd);
+        form.add(new JLabel("Nombre")); form.add(tNom);
+        form.add(new JLabel("Capital")); form.add(tCap);
+        form.add(btnAdd); form.add(btnDel);
 
         JPanel p = new JPanel(new BorderLayout());
         p.add(form, BorderLayout.NORTH);
@@ -92,31 +107,41 @@ public class VentanaIPO_Swing extends JFrame {
         return p;
     }
 
+    /* ---------------- PANEL DOCUMENTOS ---------------- */
     private JPanel panelDocumentos() {
         JTextField tTipo = new JTextField(8);
         JTextField tDesc = new JTextField(10);
-        JTextField tProvId = new JTextField(3);
-        JTextField tInvId  = new JTextField(3);
+        JTextField tProv = new JTextField(3);
+        JTextField tInv  = new JTextField(3);
         JButton btnAdd = new JButton("Crear");
+        JButton btnDel = new JButton("Eliminar seleccionado");
 
         JTable tabla = new JTable(mDoc);
 
         btnAdd.addActionListener(e -> {
             try {
-                Integer pId = tProvId.getText().isBlank()? null : Integer.parseInt(tProvId.getText());
-                Integer iId = tInvId .getText().isBlank()? null : Integer.parseInt(tInvId .getText());
-                gestor.altaDocumento(tTipo.getText(), tDesc.getText(), pId, iId);
-                tTipo.setText(""); tDesc.setText(""); tProvId.setText(""); tInvId.setText("");
+                Integer p = tProv.getText().isBlank() ? null : Integer.parseInt(tProv.getText());
+                Integer i = tInv .getText().isBlank() ? null : Integer.parseInt(tInv .getText());
+                gestor.altaDocumento(tTipo.getText(), tDesc.getText(), p, i);
+                tTipo.setText(""); tDesc.setText(""); tProv.setText(""); tInv.setText("");
                 recargaDoc();
             } catch (Exception ex) { ex.printStackTrace(); }
         });
 
+        btnDel.addActionListener(e -> {
+            int row = tabla.getSelectedRow();
+            if (row == -1) return;
+            int id = (int) tabla.getValueAt(row, 0);
+            try { gestor.borrarDocumento(id); recargaDoc(); }
+            catch (Exception ex) { ex.printStackTrace(); }
+        });
+
         JPanel form = new JPanel();
         form.add(new JLabel("Tipo")); form.add(tTipo);
-        form.add(new JLabel("Descripción")); form.add(tDesc);
-        form.add(new JLabel("ProvId")); form.add(tProvId);
-        form.add(new JLabel("InvId")); form.add(tInvId);
-        form.add(btnAdd);
+        form.add(new JLabel("Desc")); form.add(tDesc);
+        form.add(new JLabel("ProvId")); form.add(tProv);
+        form.add(new JLabel("InvId")); form.add(tInv);
+        form.add(btnAdd); form.add(btnDel);
 
         JPanel p = new JPanel(new BorderLayout());
         p.add(form, BorderLayout.NORTH);
@@ -124,32 +149,42 @@ public class VentanaIPO_Swing extends JFrame {
         return p;
     }
 
-    /* ======================================================================
-       PANEL HITOS
-       ====================================================================== */
+    /* ---------------- PANEL HITOS ---------------- */
     private JPanel panelHitos() {
-        JTextField tDocId = new JTextField(3);
-        JTextField tNombre = new JTextField(10);
-        JTextField tDesc   = new JTextField(10);
+        JTextField tDoc = new JTextField(3);
+        JTextField tNom = new JTextField(10);
+        JTextField tDes = new JTextField(10);
         JButton btnAdd = new JButton("Añadir");
+        JButton btnDel = new JButton("Eliminar seleccionado");
 
         JTable tabla = new JTable(mHit);
 
         btnAdd.addActionListener(e -> {
             try {
-                int docId = Integer.parseInt(tDocId.getText());
-                gestor.registrarHito(tNombre.getText(), tDesc.getText(),
+                int docId = Integer.parseInt(tDoc.getText());
+                gestor.registrarHito(tNom.getText(), tDes.getText(),
                         "Sin iniciar", LocalDate.now(), docId);
-                tNombre.setText(""); tDesc.setText("");
+                tNom.setText(""); tDes.setText("");
+                recargaHitos(docId);
+            } catch (Exception ex) { ex.printStackTrace(); }
+        });
+
+        btnDel.addActionListener(e -> {
+            int row = tabla.getSelectedRow();
+            if (row == -1) return;
+            int id = (int) tabla.getValueAt(row, 0);
+            try {
+                gestor.borrarHito(id);
+                int docId = Integer.parseInt(tDoc.getText());
                 recargaHitos(docId);
             } catch (Exception ex) { ex.printStackTrace(); }
         });
 
         JPanel form = new JPanel();
-        form.add(new JLabel("DocId")); form.add(tDocId);
-        form.add(new JLabel("Nombre")); form.add(tNombre);
-        form.add(new JLabel("Descripción")); form.add(tDesc);
-        form.add(btnAdd);
+        form.add(new JLabel("DocId")); form.add(tDoc);
+        form.add(new JLabel("Nombre")); form.add(tNom);
+        form.add(new JLabel("Desc")); form.add(tDes);
+        form.add(btnAdd); form.add(btnDel);
 
         JPanel p = new JPanel(new BorderLayout());
         p.add(form, BorderLayout.NORTH);
@@ -157,21 +192,19 @@ public class VentanaIPO_Swing extends JFrame {
         return p;
     }
 
-    /* ======================================================================
-       MÉTODOS DE RECARGA DE TABLAS
-       ====================================================================== */
+    /* ---------------- Recargas ---------------- */
     private void recargaProv() {
         try {
             mProv.setRowCount(0);
             gestor.listaProveedores()
-                    .forEach(pr -> mProv.addRow(new Object[]{pr.id(), pr.nombre(), pr.contacto()}));
+                    .forEach(p -> mProv.addRow(new Object[]{p.id(), p.nombre(), p.contacto()}));
         } catch (Exception e) { e.printStackTrace(); }
     }
     private void recargaInv() {
         try {
             mInv.setRowCount(0);
             gestor.listaInversionistas()
-                    .forEach(in -> mInv.addRow(new Object[]{in.id(), in.nombre(), in.capital()}));
+                    .forEach(i -> mInv.addRow(new Object[]{i.id(), i.nombre(), i.capital()}));
         } catch (Exception e) { e.printStackTrace(); }
     }
     private void recargaDoc() {
@@ -179,8 +212,7 @@ public class VentanaIPO_Swing extends JFrame {
             mDoc.setRowCount(0);
             gestor.listaDocumentos()
                     .forEach(d -> mDoc.addRow(new Object[]{
-                            d.id(), d.tipo(), d.descripcion(), d.proveedorId(), d.inversionistaId()
-                    }));
+                            d.id(), d.tipo(), d.descripcion(), d.proveedorId(), d.inversionistaId()}));
         } catch (Exception e) { e.printStackTrace(); }
     }
     private void recargaHitos(int docId) {
@@ -188,13 +220,9 @@ public class VentanaIPO_Swing extends JFrame {
             mHit.setRowCount(0);
             gestor.hitosPorDocumento(docId)
                     .forEach(h -> mHit.addRow(new Object[]{
-                            h.id(), h.nombre(), h.fecha(), h.estado(), h.documentoId()
-                    }));
+                            h.id(), h.nombre(), h.fecha(), h.estado(), h.documentoId()}));
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    /* ---------- main ---------- */
-    public static void main(String[] args) {
-        new VentanaIPO_Swing();   // crea y lanza la GUI
-    }
+    public static void main(String[] args) { new VentanaIPO_Swing(); }
 }
