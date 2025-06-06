@@ -1,4 +1,6 @@
-/* GlamourFinancialBD.java */
+package financial;/* financial.GlamourFinancialBD.java */
+import dao.CotizacionDao;
+
 import java.util.Map;
 
 public class GlamourFinancialBD implements GlamourFinancial {

@@ -1,4 +1,5 @@
-/* CotizacionDao.java */
+package dao;/* dao.CotizacionDao.java */
+
 import java.sql.*;
 import java.util.*;
 
