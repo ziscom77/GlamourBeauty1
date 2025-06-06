@@ -32,4 +32,15 @@ public class CursoDao {
                 rs.getInt("asignatura_id"),
                 rs.getString("periodo"));
     }
+    /* dentro de CursoDao.java */
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM Cursos WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
+
 }
