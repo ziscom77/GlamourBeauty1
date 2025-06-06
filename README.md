@@ -16,17 +16,17 @@ Gestión de cotizaciones bursátiles e indicadores financieros de Glamour Beauty
 
    ```bash
    git checkout feature/ej1-finanzas
-Base de datos
+2.Base de datos
 mysql -u root -p < db/finanzas_schema.sql
 Esto crea el esquema GlamourBeautyFinanzas y la tabla Cotizaciones.
 
-Configurar conexión
+3.Configurar conexión
 Edita src/dao/DatabaseConnection.java:
 private static final String URL  =
     "jdbc:mysql://localhost:3306/GlamourBeautyFinanzas";
 private static final String USER = "root";
 private static final String PASS = "TU_PASSWORD";
-Compilar y ejecutar
+4.Compilar y ejecutar
 # Maven
 mvn clean compile exec:java -Dexec.mainClass="ui.SwingFinanzas"
 
