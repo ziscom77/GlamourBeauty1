@@ -1,0 +1,1 @@
+public record Matricula  (int empleadoId, int cursoId) {}
