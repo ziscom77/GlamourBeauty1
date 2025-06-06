@@ -1,6 +1,6 @@
+/* CotizacionDao.java */
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class CotizacionDao {
 
@@ -9,7 +9,7 @@ public class CotizacionDao {
             INSERT INTO Cotizaciones(mercado, precio)
             VALUES (?, ?)
             ON DUPLICATE KEY UPDATE precio = VALUES(precio)
-            """;
+        """;
         try (Connection c = DatabaseConnection.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setString(1, mercado);
