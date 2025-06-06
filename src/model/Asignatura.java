@@ -1,1 +1,3 @@
+package model;
+
 public record Asignatura (int id, String nombre, int creditos) {}

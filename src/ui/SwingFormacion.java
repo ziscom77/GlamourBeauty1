@@ -1,8 +1,12 @@
+package ui;
+
+import model.*;
+import service.GestorFormacion;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.time.LocalDate;
-import java.util.List;
 
 
 public class SwingFormacion {
@@ -131,7 +135,7 @@ public class SwingFormacion {
         JPanel form = new JPanel();
         form.add(new JLabel("Nombre"));
         form.add(tNom);
-        form.add(new JLabel("Asignatura"));
+        form.add(new JLabel("model.Asignatura"));
         form.add(cbAsigCurso);
         form.add(new JLabel("Periodo"));
         form.add(tPer);
@@ -210,18 +214,18 @@ public class SwingFormacion {
         });
 
         JPanel pIns = new JPanel();
-        pIns.add(new JLabel("Empleado"));
+        pIns.add(new JLabel("model.Empleado"));
         pIns.add(cbEmpIns);
-        pIns.add(new JLabel("Curso"));
+        pIns.add(new JLabel("model.Curso"));
         pIns.add(cbCurIns);
         pIns.add(btnIns);
         pIns.add(btnDes);
 
-        /* ---- sub-panel Nota ---- */
+        /* ---- sub-panel model.Nota ---- */
         cbEmpNota = new JComboBox<>();
         cbCurNota = new JComboBox<>();
         JSpinner spNota = new JSpinner(new SpinnerNumberModel(0.0, 0, 10, 0.5));
-        JButton btnNota = new JButton("Registrar Nota");
+        JButton btnNota = new JButton("Registrar model.Nota");
 
         btnNota.addActionListener(e -> {
             try {
@@ -235,9 +239,9 @@ public class SwingFormacion {
         });
 
         JPanel pNota = new JPanel();
-        pNota.add(new JLabel("Empleado"));
+        pNota.add(new JLabel("model.Empleado"));
         pNota.add(cbEmpNota);
-        pNota.add(new JLabel("Curso"));
+        pNota.add(new JLabel("model.Curso"));
         pNota.add(cbCurNota);
         pNota.add(new JLabel("Valor"));
         pNota.add(spNota);
@@ -277,7 +281,7 @@ public class SwingFormacion {
         });
 
         JPanel form = new JPanel();
-        form.add(new JLabel("Empleado"));
+        form.add(new JLabel("model.Empleado"));
         form.add(cbEmpCert);
         form.add(new JLabel("Descripción"));
         form.add(tDesc);

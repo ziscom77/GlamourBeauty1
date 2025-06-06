@@ -1,14 +1,19 @@
+package service;
+
+import dao.*;
+import model.*;
+
 import java.sql.SQLException;
 import java.util.List;
 
 public class GestorFormacion {
 
-    private final AsignaturaDao   asiDao = new AsignaturaDao();
-    private final CursoDao        curDao = new CursoDao();
-    private final EmpleadoDao     empDao = new EmpleadoDao();
-    private final MatriculaDao    matDao = new MatriculaDao();
+    private final AsignaturaDao asiDao = new AsignaturaDao();
+    private final CursoDao curDao = new CursoDao();
+    private final EmpleadoDao empDao = new EmpleadoDao();
+    private final MatriculaDao matDao = new MatriculaDao();
     private final NotaDao         notaDao= new NotaDao();
-    private final CertificadoDao  cerDao = new CertificadoDao();
+    private final CertificadoDao cerDao = new CertificadoDao();
 
     /* ---------- ASIGNATURAS ---------- */
     public void altaAsignatura(String nombre, int creditos) throws SQLException {
