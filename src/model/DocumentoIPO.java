@@ -1,3 +1,5 @@
+package model;
+
 public record DocumentoIPO(
         int     id,
         String  tipo,

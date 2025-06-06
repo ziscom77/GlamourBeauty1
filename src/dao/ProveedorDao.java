@@ -1,3 +1,7 @@
+package dao;
+
+import model.Proveedor;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

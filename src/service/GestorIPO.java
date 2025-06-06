@@ -1,13 +1,24 @@
+package service;
+
+import dao.DocumentoDao;
+import dao.HitoDao;
+import dao.InversionistaDao;
+import dao.ProveedorDao;
+import model.DocumentoIPO;
+import model.HitoIPO;
+import model.Inversionista;
+import model.Proveedor;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
 public class GestorIPO {
 
-    private final ProveedorDao     proveedorDao     = new ProveedorDao();
+    private final ProveedorDao proveedorDao     = new ProveedorDao();
     private final InversionistaDao inversionistaDao = new InversionistaDao();
-    private final DocumentoDao     documentoDao     = new DocumentoDao();
-    private final HitoDao          hitoDao          = new HitoDao();
+    private final DocumentoDao documentoDao     = new DocumentoDao();
+    private final HitoDao hitoDao          = new HitoDao();
 
     /* ---------- PROVEEDORES ---------- */
     public void altaProveedor(String nombre, String contacto) throws SQLException {
